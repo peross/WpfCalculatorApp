@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfCalculator"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
-        Height="550" Width="300" AllowsTransparency="True" WindowStyle="None" 
+        Height="500" Width="700" AllowsTransparency="True" WindowStyle="None" 
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="{x:Null}">
 
     <Window.Resources>
@@ -21,7 +21,7 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
-        <Storyboard x:Key="PowerOn">
+        <!--<Storyboard x:Key="PowerOn">
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="Izlaz">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
                 <DiscreteObjectKeyFrame KeyTime="0:0:1.3" Value="{x:Static Visibility.Visible}"/>
@@ -32,49 +32,67 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:1.3" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
+        </Storyboard>-->
     </Window.Resources>
-    
+
     <Window.Triggers>
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="btnIzlaz">
             <BeginStoryboard Storyboard="{StaticResource PowerOff}"/>
         </EventTrigger>
 
-        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="btnUlaz">
+        <!--<EventTrigger RoutedEvent="ButtonBase.Click" SourceName="btnUlaz">
             <BeginStoryboard Storyboard="{StaticResource PowerOn}"/>
-        </EventTrigger>
+        </EventTrigger>-->
     </Window.Triggers>
-    
+
     <Border Background="#E5000000" CornerRadius="10">
         <Grid>
             <StackPanel>
-                <Grid Height="210">
+                <Grid Height="160">
                     <StackPanel>
                         <Button HorizontalAlignment="Left" Margin="10" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{StaticResource PrimaryHueMidForegroundBrush}">
-                            <materialDesign:PackIcon Kind="Menu" Foreground="{StaticResource PrimaryHueLightForegroundBrush}"/>
+                            <!--<materialDesign:PackIcon Kind="Menu" Foreground="{StaticResource PrimaryHueLightForegroundBrush}"/>-->
+                            <StackPanel VerticalAlignment="Center">
+                                <materialDesign:PopupBox PlacementMode="BottomAndAlignLeftEdges" StaysOpen="False">
+                                    <StackPanel>
+                                        <Button x:Name="btnObicni" Content="Standard" Click="btnObicni_Click"/>
+                                        <Button x:Name="btnNaucni" Content="Scientific"/>
+                                        <Separator/>
+                                        <Button Content="History"/>
+                                        <Separator/>
+                                        <Button Content="Exit" Click="btnUlaz_Click"/>
+                                    </StackPanel>
+                                </materialDesign:PopupBox>
+                            </StackPanel>
                         </Button>
-                        <TextBlock FontSize="15" FontFamily="Oswald" Text="30 + 20 = 50" TextAlignment="Right"
-                                   Foreground="{StaticResource PrimaryHueLightForegroundBrush}" Margin="20 0 20 10"/>
+                        <TextBlock FontSize="15" FontFamily="Oswald" Text="Calculator by Pero Soldat" TextAlignment="Right"
+                                   Foreground="{StaticResource PrimaryHueLightForegroundBrush}" Margin="60 -35 10 20"/>
                     </StackPanel>
                     <StackPanel VerticalAlignment="Bottom">
                         <TextBlock FontSize="20" FontFamily="Oswald" Text="" TextAlignment="Right"
                                    Foreground="{StaticResource PrimaryHueLightForegroundBrush}" Margin="20 0"
                                    x:Name="txtEkran1"/>
-                        <TextBlock FontSize="40" FontFamily="Oswald" Text="30" TextAlignment="Right"
-                                   Foreground="#FF5885A4" Margin="20 0">
-                            <TextBlock.Effect>
+                        <TextBox x:Name="txtEkranGlavni" FontSize="35" FontFamily="Oswald" Text="0" TextAlignment="Right"
+                                   Foreground="#FF5885A4" Margin="20,0" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                                   MaxLength="10" MaxLines="1" Height="50" PreviewTextInput="provjeriUnos">
+                            <!--<TextBlock.Effect>
                                 <DropShadowEffect BlurRadius="10" ShadowDepth="2" Color="#FF5885A4"/>
-                            </TextBlock.Effect> 
-                        </TextBlock>
+                            </TextBlock.Effect>-->
+                        </TextBox>
                     </StackPanel>
                 </Grid>
                 <Rectangle Height="1" Fill="Gray" Margin="10 0"/>
-                <Grid>
+                <Grid x:Name="gridGlavnaMreza">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width ="1*"/>
-                        <ColumnDefinition Width ="1*"/>
-                        <ColumnDefinition Width ="1*"/>
-                        <ColumnDefinition Width ="1*"/>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
@@ -83,85 +101,101 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <Button Grid.Column="0" Grid.Row="0" Margin="5"
+                    <Button x:Name="btnObrisi" Grid.Column="0" Grid.Row="0" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}">
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnObrisi_Click">
                         <materialDesign:PackIcon Kind="LetterC" Width="30" Height="30"/>
                     </Button>
-                    <Button Grid.Column="1" Grid.Row="0" Margin="5"
+                    <Button x:Name="btnPlusMinus" Grid.Column="1" Grid.Row="0" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}">
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnPlusMinus_Click">
                         <materialDesign:PackIcon Kind="PlusMinus" Width="30" Height="30"/>
                     </Button>
-                    <Button Grid.Column="2" Grid.Row="0" Margin="5"
+                    <Button x:Name="btnBrisi" Grid.Column="2" Grid.Row="0" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}">
-                        <materialDesign:PackIcon Kind="Percent" Width="30" Height="30"/>
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnBrisi_Click">
+                        <materialDesign:PackIcon Kind="Backspace" Width="30" Height="30"/>
                     </Button>
-                    <Button Grid.Column="3" Grid.Row="0" Margin="5"
+                    <Button x:Name="btnPodjeljeno" Grid.Column="3" Grid.Row="0" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}">
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnPodjeljeno_Click">
                         <materialDesign:PackIcon Kind="Divide" Width="30" Height="30"/>
                     </Button>
                     <Button x:Name="btnSedam" Grid.Column="0" Grid.Row="1" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" Click="btnSedam_Click">
-                        <materialDesign:PackIcon Kind="Number7" Width="30" Height="30"/>
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnJedan_Click" Content="7" Foreground="White" FontSize="20"
+                            FontFamily="Oswald">
                     </Button>
                     <Button x:Name="btnOsam" Grid.Column="1" Grid.Row="1" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" Click="btnOsam_Click">
-                        <materialDesign:PackIcon Kind="Number8" Width="30" Height="30"/>
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnJedan_Click" Content="8" Foreground="White" FontSize="20"
+                            FontFamily="Oswald">
                     </Button>
                     <Button x:Name="btnDevet" Grid.Column="2" Grid.Row="1" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" Click="btnDevet_Click">
-                        <materialDesign:PackIcon Kind="Number9" Width="30" Height="30"/>
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" 
+                            Click="btnJedan_Click" Content="9" Foreground="White" FontSize="20"
+                            FontFamily="Oswald">
                     </Button>
-                    <Button Grid.Column="3" Grid.Row="1" Margin="5"
+                    <Button x:Name="btnPuta" Grid.Column="3" Grid.Row="1" Margin="0 0 0 0"
                             Style="{StaticResource MaterialDesignFloatingActionButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}">
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnPuta_Click">
                         <materialDesign:PackIcon Kind="Multiplication" Width="30" Height="30"/>
                     </Button>
                     <Button x:Name="btnCetiri" Grid.Column="0" Grid.Row="2" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" Click="btnCetiri_Click">
-                        <materialDesign:PackIcon Kind="Number4" Width="30" Height="30"/>
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" 
+                            Click="btnJedan_Click" Content="4" Foreground="White" FontSize="20"
+                            FontFamily="Oswald">
                     </Button>
                     <Button x:Name="btnPet" Grid.Column="1" Grid.Row="2" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" Click="btnPet_Click">
-                        <materialDesign:PackIcon Kind="Number5" Width="30" Height="30"/>
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnJedan_Click" Content="5" Foreground="White" FontSize="20"
+                            FontFamily="Oswald">
                     </Button>
                     <Button x:Name="btnSest" Grid.Column="2" Grid.Row="2" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" Click="btnSest_Click">
-                        <materialDesign:PackIcon Kind="Number6" Width="30" Height="30"/>
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnJedan_Click" Content="6" Foreground="White" FontSize="20"
+                            FontFamily="Oswald">
                     </Button>
-                    <Button Grid.Column="3" Grid.Row="2" Margin="5"
+                    <Button x:Name="btnMinus" Grid.Column="3" Grid.Row="2" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}">
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnMinus_Click">
                         <materialDesign:PackIcon Kind="Minus" Width="30" Height="30"/>
                     </Button>
                     <Button x:Name="btnJedan" Grid.Column="0" Grid.Row="3" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
-                            Click="btnJedan_Click">
-                        <materialDesign:PackIcon Kind="Number1" Width="30" Height="30"/>
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" 
+                            Click="btnJedan_Click" Content="1" Foreground="White" FontSize="20"
+                            FontFamily="Oswald">
+                        <!--<materialDesign:PackIcon Width="30" Height="30"/>-->
                     </Button>
                     <Button x:Name="btnDva" Grid.Column="1" Grid.Row="3" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" Click="btnDva_Click">
-                        <materialDesign:PackIcon Kind="Number2" Width="30" Height="30"/>
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" 
+                            Click="btnJedan_Click" Content="2" Foreground="White" FontSize="20"
+                            FontFamily="Oswald">
                     </Button>
                     <Button x:Name="btnTri" Grid.Column="2" Grid.Row="3" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" Click="btnTri_Click">
-                        <materialDesign:PackIcon Kind="Number3" Width="30" Height="30"/>
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnJedan_Click" Content="3" Foreground="White" FontSize="20"
+                            FontFamily="Oswald">
                     </Button>
-                    <Button Grid.Column="3" Grid.Row="3" Margin="5"
+                    <Button x:Name="btnPlus" Grid.Column="3" Grid.Row="3" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}">
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnPlus_Click">
                         <materialDesign:PackIcon Kind="Plus" Width="30" Height="30"/>
                     </Button>
                     <Button x:Name="btnIzlaz" Grid.Column="0" Grid.Row="4" Margin="5"
@@ -171,18 +205,139 @@
                     </Button>
                     <Button x:Name="btnNula" Grid.Column="1" Grid.Row="4" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}">
-                        <materialDesign:PackIcon Kind="Number0" Width="30" Height="30"/>
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnJedan_Click" Content="0" Foreground="White" FontSize="20"
+                            FontFamily="Oswald">
                     </Button>
-                    <Button Grid.Column="2" Grid.Row="4" Margin="5"
+                    <Button x:Name="btnZarez" Grid.Column="2" Grid.Row="4" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
                             BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
-                            Content=".">
-                    </Button>
-                    <Button Grid.Column="4" Grid.Row="4" Margin="5"
+                            Content="." Click="btnJedan_Click"/>
+                    <Button x:Name="btnJednako" Grid.Column="3" Grid.Row="4" Margin="5"
                             Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
-                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}">
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnJednako_Click">
                         <materialDesign:PackIcon Kind="Equal" Width="30" Height="30"/>
+                    </Button>
+                    <Button x:Name="btnPi" Grid.Column="4" Grid.Row="0" Margin="5"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnPi_Click">
+                        <materialDesign:PackIcon Kind="Pi" Width="30" Height="30"/>
+                    </Button>
+                    <Button x:Name="btnLog" Grid.Column="5" Grid.Row="0" Margin="5"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnLog_Click">
+                        <materialDesign:PackIcon Kind="MathLog" Width="30" Height="30"/>
+                    </Button>
+                    <Button x:Name="btnKorijen" Grid.Column="6" Grid.Row="0" Margin="5"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnKorijen_Click">
+                        <materialDesign:PackIcon Kind="SquareRoot" Width="30" Height="30"/>
+                    </Button>
+                    <Button x:Name="btnKvadrat" Grid.Column="7" Grid.Row="0" Margin="5"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnKvadrat_Click">
+                        <materialDesign:PackIcon Kind="FormatSuperscript" Width="30" Height="30"/>
+                    </Button>
+                    <Button x:Name="btnSinh" Grid.Column="4" Grid.Row="1" Margin="5" Content="SINH"
+                            FontFamily="Oswald" FontSize="18" FontWeight="Bold"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnSinh_Click">
+                    </Button>
+                    <Button x:Name="btnSin" Grid.Column="5" Grid.Row="1" Margin="5"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnSin_Click">
+                        <materialDesign:PackIcon Kind="MathSin"  Width="30" Height="30"/>
+                    </Button>
+                    <Button x:Name="btnDec" Grid.Column="6" Grid.Row="1" Margin="5" Content="DEC"
+                            FontFamily="Oswald" FontSize="18" FontWeight="Bold"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnDec_Click">
+                    </Button>
+                    <Button x:Name="btnKubni" Grid.Column="7" Grid.Row="1" Margin="5" Content="X^3"
+                            FontFamily="Oswald" FontSize="18" FontWeight="Bold"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnKubni_Click">
+                    </Button>
+                    <Button x:Name="btnCosh" Grid.Column="4" Grid.Row="2" Margin="5" Content="COSH"
+                            FontFamily="Oswald" FontSize="18" FontWeight="Bold"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnCosh_Click">
+                    </Button>
+                    <Button x:Name="btnCos" Grid.Column="5" Grid.Row="2" Margin="5"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnCos_Click">
+                        <materialDesign:PackIcon Kind="MathCos" Width="30" Height="30"/>
+                    </Button>
+                    <Button x:Name="btnHex" Grid.Column="6" Grid.Row="2" Margin="5" Content="HEX"
+                            FontFamily="Oswald" FontSize="18" FontWeight="Bold"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnHex_Click">
+                    </Button>
+                    <Button x:Name="btnReciprocno" Grid.Column="7" Grid.Row="2" Margin="5" Content="1/x"
+                            FontFamily="Oswald" FontSize="18" FontWeight="Bold"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnReciprocno_Click">
+                    </Button>
+                    <Button x:Name="btnTanh" Grid.Column="4" Grid.Row="3" Margin="5" Content="TANH"
+                            FontFamily="Oswald" FontSize="18" FontWeight="Bold"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnTanh_Click">
+                    </Button>
+                    <Button x:Name="btnTan" Grid.Column="5" Grid.Row="3" Margin="5"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnTan_Click">
+                        <materialDesign:PackIcon Kind="MathTan" Width="30" Height="30"/>
+                    </Button>
+                    <Button x:Name="btnBin" Grid.Column="6" Grid.Row="3" Margin="5" Content="BIN"
+                            FontFamily="Oswald" FontSize="18" FontWeight="Bold"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnBin_Click">
+                    </Button>
+                    <Button x:Name="btnLn" Grid.Column="7" Grid.Row="3" Margin="5" Content="ln x"
+                            FontFamily="Oswald" FontSize="18" FontWeight="Bold"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnLn_Click">
+                    </Button>
+                    <Button x:Name="btnExp" Grid.Column="4" Grid.Row="4" Margin="5" Content="EXP"
+                            FontFamily="Oswald" FontSize="18" FontWeight="Bold"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnExp_Click">
+                    </Button>
+                    <Button x:Name="btnMod" Grid.Column="5" Grid.Row="4" Margin="5" Content="MOD"
+                            FontFamily="Oswald" FontSize="18" FontWeight="Bold"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnMod_Click">
+                    </Button>
+                    <Button x:Name="btnOct" Grid.Column="6" Grid.Row="4" Margin="5" Content="OCT"
+                            FontFamily="Oswald" FontSize="18" FontWeight="Bold"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnOct_Click">
+                    </Button>
+                    <Button x:Name="btnPosto" Grid.Column="7" Grid.Row="4" Margin="5"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            BorderThickness="1" BorderBrush="{StaticResource PrimaryHueMidBrush}"
+                            Click="btnPosto_Click">
+                        <materialDesign:PackIcon Kind="Percent" Width="30" Height="30"/>
                     </Button>
                 </Grid>
             </StackPanel>
